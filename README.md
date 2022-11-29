@@ -26,3 +26,18 @@ Réaliser un robot qui se déplace - [Énoncé complet](https://kata-log.rocks/m
 
 ### Tennis
 Gérer les points du tennis - [Énoncé complet](https://codingdojo.org/kata/Tennis)
+
+### Bank
+Application de bank en console, qui permet de
+- Connaître le solde de son compte
+- Faire un dépôt
+- Faire un retrait
+- Faire la liste des transactions sous la forme :
+
+|------|-----|-----|
+| Date  | Transaction | Balance |
+|------|-----|-----|
+| 14/01/2022 | -500     | 2500  |
+| 13/01/2022 | 2000     | 3000  |
+| 10/01/2022 | 1000     | 1000  |
+|------|-----|-----|
