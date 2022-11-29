@@ -21,4 +21,19 @@ class BankAccountTest extends TestCase
 
         self::assertSame(1_100_000, $bankAccount->getBalance());
     }
+
+    public function testMakingWithdrawalFromBankAccount(): void
+    {
+        $bankAccount = new BankAccount();
+        $bankAccount->makeWithdrawal(100_000);
+
+        self::assertSame(900_000, $bankAccount->getBalance());
+    }
+
+    public function testCannotMakeWithdrawalIfInsufficientFundsOnBankAccount(): void
+    {
+        $bankAccount = new BankAccount();
+        self::expectExceptionMessage('Insufficient funds on bank account');
+        $bankAccount->makeWithdrawal(11_000_000);
+    }
 }

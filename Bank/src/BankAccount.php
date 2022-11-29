@@ -16,4 +16,15 @@ class BankAccount {
 
         return $this;
     }
+
+    public function makeWithdrawal(int $withdrawalAmount): self
+    {
+        if ($this->getBalance() < $withdrawalAmount) {
+            throw new Exception('Insufficient funds on bank account');
+        }
+
+        $this->balance -= $withdrawalAmount;
+
+        return $this;
+    }
 }

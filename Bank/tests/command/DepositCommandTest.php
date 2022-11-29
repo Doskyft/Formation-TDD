@@ -3,9 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophet;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 require_once __DIR__.'/../../src/BankAccount.php';

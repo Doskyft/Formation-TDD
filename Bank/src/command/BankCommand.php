@@ -9,6 +9,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 require_once __DIR__.'/ViewBalanceCommand.php';
 require_once __DIR__.'/../BankAccount.php';
 require_once __DIR__.'/DepositCommand.php';
+require_once __DIR__.'/WithdrawalCommand.php';
 
 class BankCommand extends Command
 {
@@ -25,6 +26,7 @@ class BankCommand extends Command
             [
                 'view' => 'Voir le solde du compte',
                 'deposit' => 'Faire un dépôt',
+                'withdrawal' => 'Effectuer un retrait',
                 'quit' => 'Quitter'
             ],
             'quit'
@@ -40,6 +42,10 @@ class BankCommand extends Command
         } elseif ($result === 'deposit') {
             $application->add(new DepositCommand($this->bankAccount, 'deposit'));
             $command = $application->find('deposit');
+            $command->run($input, $output);
+        } elseif ($result === 'withdrawal') {
+            $application->add(new WithdrawalCommand($this->bankAccount, 'withdrawal'));
+            $command = $application->find('withdrawal');
             $command->run($input, $output);
         }
 

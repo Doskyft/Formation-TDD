@@ -20,15 +20,14 @@ require_once __DIR__.'/../../src/command/BankCommand.php';
 class BankCommandTest extends TestCase
 {
     private CommandTester $commandTester;
-    private Command $command;
 
     protected function setUp(): void
     {
         $application = new Application();
         $application->add(new BankCommand(new BankAccount(), 'bank'));
-        $this->command = $application->find('bank');
+        $command = $application->find('bank');
 
-        $this->commandTester = new CommandTester($this->command);
+        $this->commandTester = new CommandTester($command);
     }
 
     public function testUserCanViewOptionsOnMainScreen(): void
@@ -40,5 +39,6 @@ class BankCommandTest extends TestCase
         $this->assertStringContainsString("Que voulez vous faire sur votre compte ?", $display);
         $this->assertStringContainsString("Voir le solde du compte", $display);
         $this->assertStringContainsString("Faire un dépôt", $display);
+        $this->assertStringContainsString("Effectuer un retrait", $display);
     }
 }

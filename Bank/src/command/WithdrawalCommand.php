@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class DepositCommand extends Command
+class WithdrawalCommand extends Command
 {
     public function __construct(private BankAccount $bankAccount, string $name = null)
     {
@@ -16,11 +16,16 @@ class DepositCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
-        $question = new Question("Quel montant voulez vous déposer ?\n", 0);
+        $question = new Question("Quel montant voulez vous retirer ?\n", 0);
 
         $result = $helper->ask($input, $output, $question);
 
-        $this->bankAccount->makeDeposit($result * 100);
+        try {
+            $this->bankAccount->makeWithdrawal($result * 100);
+        } catch (Exception) {
+            $output->writeln('Le solde de votre compte est insuffisant.');
+            $this->retryWithdrawal();
+        }
 
         $output->writeln('Le solde de votre compte est de : '.$this->bankAccount->getBalance() / 100 . '€');
 
@@ -30,5 +35,14 @@ class DepositCommand extends Command
         $command->run($input, $output);
 
         return Command::SUCCESS;
+    }
+
+    private function retryWithdrawal(): void
+    {
+        // TODO finir ca
+        $application = new Application();
+        $application->add(new WithdrawalCommand($this->bankAccount, 'withdrawal'));
+        $command = $application->find('withdrawal');
+        $command->run($input, $output);
     }
 }
