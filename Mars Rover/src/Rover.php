@@ -56,7 +56,7 @@ class Rover {
         }
     }
 
-    public function wrapRoverMovesOnPlanetEdges(): void
+    private function wrapRoverMovesOnPlanetEdges(): void
     {
         if (null === $this->planet) {
             return;
