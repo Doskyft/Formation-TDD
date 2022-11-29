@@ -2,6 +2,7 @@
 
 require_once __DIR__.'/Coordinates.php';
 require_once __DIR__.'/Planet.php';
+require_once __DIR__.'/ObstacleException.php';
 
 class Rover {
 
@@ -32,6 +33,9 @@ class Rover {
         return $this->coordinates;
     }
 
+    /**
+     * @throws ObstacleException
+     */
     public function forward(): void
     {
         switch ($this->getDirection()) {
@@ -42,6 +46,14 @@ class Rover {
         }
 
         $this->wrapRoverMovesOnPlanetEdges();
+
+        try {
+            $this->isObstacleOnTheWay();
+        } catch (ObstacleException $e) {
+            $this->backward();
+
+            throw new ObstacleException($e->getMessage());
+        }
     }
 
     public function wrapRoverMovesOnPlanetEdges(): void
@@ -72,6 +84,9 @@ class Rover {
         $this->planet = $planet;
     }
 
+    /**
+     * @throws ObstacleException
+     */
     public function backward(): void
     {
         switch ($this->getDirection()) {
@@ -82,6 +97,14 @@ class Rover {
         }
 
         $this->wrapRoverMovesOnPlanetEdges();
+
+        try {
+            $this->isObstacleOnTheWay();
+        } catch (ObstacleException $e) {
+            $this->forward();
+
+            throw new ObstacleException($e->getMessage());
+        }
     }
 
     public function getDirection(): string
@@ -120,6 +143,9 @@ class Rover {
         }
     }
 
+    /**
+     * @throws ObstacleException
+     */
     public function execInstructions(array $instructions): void
     {
         foreach ($instructions as $instruction) {
@@ -129,6 +155,24 @@ class Rover {
                 case 'l': $this->left(); break;
                 case 'r': $this->right(); break;
             }
+        }
+    }
+
+    private function isObstacleOnTheWay(): void
+    {
+        if (
+            null !== $this->planet &&
+            null !== $this->planet->getObstacle() &&
+            $this->coordinates->getX() === $this->planet->getObstacle()->getX() &&
+            $this->coordinates->getY() === $this->planet->getObstacle()->getY()
+        ) {
+            throw new ObstacleException(
+                sprintf(
+                    ObstacleException::MESSAGE,
+                    $this->planet->getObstacle()->getX(),
+                    $this->planet->getObstacle()->getY(),
+                )
+            );
         }
     }
 }

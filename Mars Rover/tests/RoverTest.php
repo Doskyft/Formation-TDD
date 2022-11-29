@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 require_once __DIR__.'/../src/Rover.php';
 require_once __DIR__.'/../src/Planet.php';
+require_once __DIR__.'/../src/ObstacleException.php';
 
 /**
  * Access rover new coordinates
@@ -180,5 +181,29 @@ class RoverTest extends TestCase {
         $rover->forward();
         self::assertSame(8, $rover->coordinates()->getX());
         self::assertSame(10, $rover->coordinates()->getY());
+    }
+
+    public function testRoverReportsEncounteredObstacleAndAbortMovingInstructions(): void
+    {
+        $planet = new Planet(8,10);
+
+        $planet->setObstacle(new Coordinates(2, 3));
+
+        $rover = new Rover(
+            new Coordinates(1, 1),
+            Rover::NORTH
+        );
+
+        $rover->landOnPlanet($planet);
+
+        $instructions = [
+            'f', 'f', 'r', 'f', 'f', 'f',
+        ];
+
+        self::expectException(ObstacleException::class);
+        self::expectExceptionMessage('Obstacle encountered at coordinates (2, 3)');
+        $rover->execInstructions($instructions);
+        self::assertSame(1, $rover->coordinates()->getX());
+        self::assertSame(3, $rover->coordinates()->getY());
     }
 }

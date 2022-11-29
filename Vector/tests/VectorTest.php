@@ -1,7 +1,10 @@
 <?php declare(strict_types=1);
+
+namespace tests;
+
 use PHPUnit\Framework\TestCase;
 
-require_once __DIR__.'/../index.php';
+require_once __DIR__ . '/../src/index.php';
 
 final class VectorTest extends TestCase
 {
