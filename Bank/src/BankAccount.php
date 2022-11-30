@@ -10,6 +10,11 @@ class BankAccount {
     /** @var array<Transaction> */
     private array $transactions = [];
 
+    public function __construct(BankClientInterface $bankTransferClient)
+    {
+        $this->bankTransferClient = $bankTransferClient;
+    }
+
     public function getBalance(): int
     {
         return $this->balance;
@@ -28,6 +33,17 @@ class BankAccount {
         );
 
         return $this;
+    }
+
+    public function makeTransfer(string $iban, int $amount): string
+    {
+        $response = $this->bankTransferClient->transfer($iban, $amount);
+
+        if ($response === 'Le transfert a bien été réalisé') {
+            $this->balance -= $amount;
+        }
+
+        return $response;
     }
 
     /**

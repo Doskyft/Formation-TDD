@@ -11,6 +11,7 @@ require_once __DIR__.'/../BankAccount.php';
 require_once __DIR__.'/DepositCommand.php';
 require_once __DIR__.'/WithdrawalCommand.php';
 require_once __DIR__.'/ViewTransactionsAccountBankCommand.php';
+require_once __DIR__.'/MakeTransferCommand.php';
 
 class BankCommand extends Command
 {
@@ -30,6 +31,7 @@ class BankCommand extends Command
                     'view' => 'Voir le solde du compte',
                     'deposit' => 'Faire un dépôt',
                     'withdrawal' => 'Effectuer un retrait',
+                    'transfer' => 'Effectuer un virement',
                     'listTx' => 'Afficher vos transactions',
                     'quit' => 'Quitter'
                 ],
@@ -54,6 +56,10 @@ class BankCommand extends Command
             }elseif ($result==='listTx') {
                 $application->add(new ViewTransactionsAccountBankCommand($this->bankAccount, 'viewTransactions'));
                 $command = $application->find('viewTransactions');
+                $command->run($input, $output);
+            }elseif ($result==='transfer') {
+                $application->add(new MakeTransferCommand($this->bankAccount, 'transfer'));
+                $command = $application->find('transfer');
                 $command->run($input, $output);
             }
         } while ($result !== 'quit');

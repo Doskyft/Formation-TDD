@@ -8,6 +8,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 require_once __DIR__.'/../../src/BankAccount.php';
 require_once __DIR__.'/../../src/command/ViewTransactionsAccountBankCommand.php';
+require_once __DIR__.'/../../src/client/HttpBankClient.php';
 
 /**
  * Doit afficher la liste de toutes les transactions du compte
@@ -20,7 +21,7 @@ class ViewTransactionsAccountBankCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $bankAccount = new BankAccount();
+        $bankAccount = new BankAccount(new HttpBankClient());
         $bankAccount->makeDeposit(100_000);
         $bankAccount->makeDeposit(150_000);
         $bankAccount->makeWithdrawal(50_000);

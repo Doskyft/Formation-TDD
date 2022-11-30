@@ -9,6 +9,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 require_once __DIR__.'/../../src/BankAccount.php';
 require_once __DIR__.'/../../src/command/BankCommand.php';
 require_once __DIR__.'/../../src/command/WithdrawalCommand.php';
+require_once __DIR__.'/../../src/client/HttpBankClient.php';
 
 class WithdrawalCommandTest extends TestCase
 {
@@ -16,7 +17,7 @@ class WithdrawalCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $bankAccount = new BankAccount();
+        $bankAccount = new BankAccount(new HttpBankClient());
 
         $application = new Application();
         $application->add(new WithdrawalCommand($bankAccount, 'withdrawal'));

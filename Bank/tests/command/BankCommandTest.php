@@ -9,6 +9,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 require_once __DIR__.'/../../src/BankAccount.php';
 require_once __DIR__.'/../../src/command/BankCommand.php';
+require_once __DIR__.'/../../src/client/HttpBankClient.php';
 
 /*
  * As a user I can select the deposit option on main screen
@@ -24,7 +25,7 @@ class BankCommandTest extends TestCase
     protected function setUp(): void
     {
         $application = new Application();
-        $application->add(new BankCommand(new BankAccount(), 'bank'));
+        $application->add(new BankCommand(new BankAccount(new HttpBankClient()), 'bank'));
         $command = $application->find('bank');
 
         $this->commandTester = new CommandTester($command);
@@ -40,6 +41,7 @@ class BankCommandTest extends TestCase
         $this->assertStringContainsString("Voir le solde du compte", $display);
         $this->assertStringContainsString("Faire un dépôt", $display);
         $this->assertStringContainsString("Effectuer un retrait", $display);
+        $this->assertStringContainsString("Effectuer un virement", $display);
         $this->assertStringContainsString("Afficher vos transactions", $display);
     }
 }

@@ -4,6 +4,7 @@
         "phpspec/prophecy": "~1.0"
     },
     "require": {
-        "symfony/console": "^6.1"
+        "symfony/console": "^6.1",
+        "symfony/http-client": "^6.1"
     }
 }
