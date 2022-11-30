@@ -24,22 +24,16 @@ class WithdrawalCommand extends Command
             $this->bankAccount->makeWithdrawal($result * 100);
         } catch (Exception) {
             $output->writeln('Le solde de votre compte est insuffisant.');
-            $this->retryWithdrawal();
+            $this->retryWithdrawal($input, $output);
         }
 
         $output->writeln('Le solde de votre compte est de : '.$this->bankAccount->getBalance() / 100 . '€');
 
-        $application = new Application();
-        $application->add(new BankCommand($this->bankAccount,'bankAccount'));
-        $command = $application->find('bankAccount');
-        $command->run($input, $output);
-
         return Command::SUCCESS;
     }
 
-    private function retryWithdrawal(): void
+    private function retryWithdrawal(InputInterface $input, OutputInterface $output): void
     {
-        // TODO finir ca
         $application = new Application();
         $application->add(new WithdrawalCommand($this->bankAccount, 'withdrawal'));
         $command = $application->find('withdrawal');

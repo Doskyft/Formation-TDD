@@ -24,11 +24,6 @@ class DepositCommand extends Command
 
         $output->writeln('Le solde de votre compte est de : '.$this->bankAccount->getBalance() / 100 . '€');
 
-        $application = new Application();
-        $application->add(new BankCommand($this->bankAccount,'bankAccount'));
-        $command = $application->find('bankAccount');
-        $command->run($input, $output);
-
         return Command::SUCCESS;
     }
 }

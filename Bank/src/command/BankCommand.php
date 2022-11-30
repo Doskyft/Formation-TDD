@@ -21,33 +21,37 @@ class BankCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
-        $question = new ChoiceQuestion(
-            'Que voulez vous faire sur votre compte ?',
-            [
-                'view' => 'Voir le solde du compte',
-                'deposit' => 'Faire un dépôt',
-                'withdrawal' => 'Effectuer un retrait',
-                'quit' => 'Quitter'
-            ],
-            'quit'
-        );
 
-        $result = $helper->ask($input, $output, $question);
-        $application = new Application();
+        do {
+            $question = new ChoiceQuestion(
+                'Que voulez vous faire sur votre compte ?',
+                [
+                    'view' => 'Voir le solde du compte',
+                    'deposit' => 'Faire un dépôt',
+                    'withdrawal' => 'Effectuer un retrait',
+                    'quit' => 'Quitter'
+                ],
+                'quit'
+            );
 
-        if ($result === 'view') {
-            $application->add(new ViewBalanceCommand($this->bankAccount, 'viewAccountBank'));
-            $command = $application->find('viewAccountBank');
-            $command->run($input, $output);
-        } elseif ($result === 'deposit') {
-            $application->add(new DepositCommand($this->bankAccount, 'deposit'));
-            $command = $application->find('deposit');
-            $command->run($input, $output);
-        } elseif ($result === 'withdrawal') {
-            $application->add(new WithdrawalCommand($this->bankAccount, 'withdrawal'));
-            $command = $application->find('withdrawal');
-            $command->run($input, $output);
-        }
+            $result = $helper->ask($input, $output, $question);
+            $application = new Application();
+
+            if ($result === 'view') {
+                $application->add(new ViewBalanceCommand($this->bankAccount, 'viewAccountBank'));
+                $command = $application->find('viewAccountBank');
+                $command->run($input, $output);
+            } elseif ($result === 'deposit') {
+                $application->add(new DepositCommand($this->bankAccount, 'deposit'));
+                $command = $application->find('deposit');
+                $command->run($input, $output);
+            } elseif ($result === 'withdrawal') {
+                $application->add(new WithdrawalCommand($this->bankAccount, 'withdrawal'));
+                $command = $application->find('withdrawal');
+                $command->run($input, $output);
+            }
+        } while ($result !== 'quit');
+
 
         return Command::SUCCESS;
     }
