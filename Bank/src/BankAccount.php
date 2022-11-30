@@ -49,6 +49,7 @@ class BankAccount {
 
     public function fetchAllTransfers(): array
     {
+        $this->bankTransferClient->fetchAll();
         return [new Transfer(), new Transfer()];
     }
 

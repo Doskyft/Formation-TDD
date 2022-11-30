@@ -138,7 +138,6 @@ class BankAccountTest extends TestCase
     {
         $prophet = new Prophecy\Prophet();
 
-        $prophet->prophesize(FakeBankClient::class)
         $bankAccount = new BankAccount(new FakeBankClient());
 
         $bankAccount->makeTransfer(FakeBankClient::VALID_IBANS[0], 1000);
