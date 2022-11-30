@@ -39,7 +39,7 @@ class WithdrawalCommandTest extends TestCase
         $this->assertStringContainsString('Le solde de votre compte est de : 9000€', trim($this->commandTester->getDisplay()));
     }
 
-    public function testPromptErrorMessageIfInsuficientFundsForWithdrawal(): void
+    public function testPromptErrorMessageIfInsufficientFundsForWithdrawal(): void
     {
         $this->commandTester->setInputs([11000]);
         $this->commandTester->execute([]);

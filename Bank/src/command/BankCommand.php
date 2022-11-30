@@ -10,6 +10,7 @@ require_once __DIR__.'/ViewBalanceCommand.php';
 require_once __DIR__.'/../BankAccount.php';
 require_once __DIR__.'/DepositCommand.php';
 require_once __DIR__.'/WithdrawalCommand.php';
+require_once __DIR__.'/ViewTransactionsAccountBankCommand.php';
 
 class BankCommand extends Command
 {
@@ -29,6 +30,7 @@ class BankCommand extends Command
                     'view' => 'Voir le solde du compte',
                     'deposit' => 'Faire un dépôt',
                     'withdrawal' => 'Effectuer un retrait',
+                    'listTx' => 'Afficher vos transactions',
                     'quit' => 'Quitter'
                 ],
                 'quit'
@@ -48,6 +50,10 @@ class BankCommand extends Command
             } elseif ($result === 'withdrawal') {
                 $application->add(new WithdrawalCommand($this->bankAccount, 'withdrawal'));
                 $command = $application->find('withdrawal');
+                $command->run($input, $output);
+            }elseif ($result==='listTx') {
+                $application->add(new ViewTransactionsAccountBankCommand($this->bankAccount, 'viewTransactions'));
+                $command = $application->find('viewTransactions');
                 $command->run($input, $output);
             }
         } while ($result !== 'quit');

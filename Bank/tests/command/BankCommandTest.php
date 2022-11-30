@@ -40,5 +40,6 @@ class BankCommandTest extends TestCase
         $this->assertStringContainsString("Voir le solde du compte", $display);
         $this->assertStringContainsString("Faire un dépôt", $display);
         $this->assertStringContainsString("Effectuer un retrait", $display);
+        $this->assertStringContainsString("Afficher vos transactions", $display);
     }
 }
