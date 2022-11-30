@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once __DIR__.'/Transaction.php';
 
 class BankAccount {
+    public const ACCOUNT_IBAN = 'FR765421321231654143211';
     private int $balance = 1_000_000;
 
     /** @var array<Transaction> */
@@ -44,6 +45,11 @@ class BankAccount {
         }
 
         return $response;
+    }
+
+    public function fetchAllTransfers(): array
+    {
+        return [new Transfer(), new Transfer()];
     }
 
     /**

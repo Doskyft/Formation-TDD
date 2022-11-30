@@ -5,15 +5,13 @@ declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../src/BankAccount.php';
+require_once __DIR__ . '/../src/Transfer.php';
 require_once __DIR__ . '/Client/FakeBankClient.php';
 require_once __DIR__ . '/../src/client/BankClientInterface.php';
 
 /**
- * I receive httpOk (200) response when sending request with correct Iban and positive amount
- * I receive a 403 response when sending request with wrong recipient Iban
- * I receive a 400 response if a fields is missing
- * I receive a 400 response and <<"amount" must be greater than or equal to 0>> in message when sending request with a
- * negative amount
+ * I can receive transferList of sent transfers corresponding to my iban
+ * I receive an empty list if I didn't make any transfer
  *
  */
 class BankAccountTest extends TestCase
@@ -134,5 +132,27 @@ class BankAccountTest extends TestCase
         );
 
         self::assertSame(BankClientInterface::INVALID_AMOUNT_MESSAGE, $response);
+    }
+
+    public function testFetchingListOfTransfersFromBankClient(): void
+    {
+        $prophet = new Prophecy\Prophet();
+
+        $prophet->prophesize(FakeBankClient::class)
+        $bankAccount = new BankAccount(new FakeBankClient());
+
+        $bankAccount->makeTransfer(FakeBankClient::VALID_IBANS[0], 1000);
+        $bankAccount->makeTransfer(FakeBankClient::VALID_IBANS[1], 1000);
+
+        $transfers = $bankAccount->fetchAllTransfers();
+
+        self::assertCount(2, $transfers);
+
+        foreach ($transfers as $transfer) {
+            self::assertInstanceOf(Transfer::class, $transfer);
+            self::assertSame(BankAccount::ACCOUNT_IBAN, $transfer->ibanFrom());
+            self::assertContains($transfer->ibanTo(), FakeBankClient::VALID_IBANS);
+            self::assertSame(1000, $transfer->amount());
+        }
     }
 }
