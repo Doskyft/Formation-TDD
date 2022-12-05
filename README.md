@@ -34,12 +34,10 @@ Application de bank en console, qui permet de
 - Faire un retrait
 - Faire la liste des transactions sous la forme :
 
+| Date | Transaction | Balance |
 |------|-----|-----|
-| Date  | Transaction | Balance |
-|------|-----|-----|
-| 14/01/2022 | -500     | 2500  |
-| 13/01/2022 | 2000     | 3000  |
-| 10/01/2022 | 1000     | 1000  |
-|------|-----|-----|
+| 14/01/2022 | -500 | 2500 |
+| 13/01/2022 | 2000 | 3000 |
+| 10/01/2022 | 1000 | 1000 |
 
 - Appel webservice - https://bank-kata-tdd.herokuapp.com/
